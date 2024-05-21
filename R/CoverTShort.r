@@ -54,7 +54,7 @@
 #'   \eqn{\hat{\beta}} by its standard error, aiming to refine the precision of the confidence interval
 #'   and adjust for the variability in the parameter estimation.
 #'
-#' - boot-SP: Symmetrized Percentile-t method, a variation of the boot-t that symmetrizes the
+#' - bootSP: Symmetrized Percentile-t method, a variation of the boot-t that symmetrizes the
 #'   bootstrap distribution around zero to handle skewed distributions or outliers more effectively.
 #'   This method enhances the accuracy of confidence intervals by adjusting for asymmetries in the
 #'   bootstrap replicas.
@@ -69,38 +69,35 @@
 #'
 #' @export
 
-Coverageshortmemory<-function(n,R,N,S,mu,dist,method,alpha,beta,start,Subdivisions=100,m=10,NN=10,B,case,sign=1.64,nr.cores=1,seed=123)
-  {
-  if(dist=="normal"){
-
-    k<-Sem.ruid(K=10000, mu=mu, n=n, l=1, alpha1=alpha, beta1=beta, start1=start, N=N, S=S)
+Coverageshortmemory<-function(n,R,N,S,mu,dist,method,alpha,beta,start,Subdivisions=100,m=10,NN=10,B,case,sign=1.64)
+{
+if(case=="no-linear"){
+  if(method=="asym"){
+    if(dist=="normal"){
+    k<-Sem.ruid(K=10000,mu=mu,n=n,l=1,alpha1=alpha,beta1=beta,start1=start,N=N,S=S)
     u<-1:n/n
+    coverT<-rep(0, R)
     LI<-rep(0, R)
     LS<-rep(0, R)
-
-    cl <- makeCluster(nr.cores)
-    registerDoParallel(cl)
-    registerDoRNG(seed)
-
-    cove <- foreach(k = 1:B, .combine = 'rbind', .inorder=T) %dorng% {
+    coverage<-rep(0, R)
+    leng<-rep(0,R)
+    for(i in 1:R){
       set.seed(k)
       zz<-rnorm(n)
-      e<-sim.dat.lsar.short(n=n, alp=alpha, bet=beta, z=zz, w=2*pi)
+      e<-sim.dat.lsar.short(n=n,alp=alpha,bet=beta,z=zz,w=2*pi)
       Y<-mu*u+e
-      fit<-lsfn.whittle.short(Y, N=N, S=S, start2=start)
-      fit2<-as.vector(as.vector(c(fit[[1]], fit[[2]])))
-      VarCov<-(9/n)*(var.ar.alpha_caso.short(alpha3=c(fit2[1], fit2[2]), Gamma=c(fit2[3], fit2[4], fit2[5]), Subdivisions1=Subdivisions))
+      fit<-lsfn.whittle.short(Y,N=N,S=S,start2=start)
+      fit2<-as.vector(as.vector(c(fit[[1]],fit[[2]])))
+      VarCov<-(9/n)*(var.ar.alpha_caso.short(alpha3=c(fit2[1],fit2[2]),Gamma=c(fit2[3],fit2[4],fit2[5]),Subdivisions1=Subdivisions))
       LI[i]<-fit2[6] - sign*sqrt(VarCov)
       LS[i]<-fit2[6] + sign*sqrt(VarCov)
-      s<-Sem.ruid(K=100000, mu=mu, n=n, l=k+1, alpha1=alpha, beta1=beta, start1=start, N=N, S=S)
+      coverage[i]<-((sum((LI[i]<=mu & mu<= LS[i])*1)))
+      leng[i]<-(LS[i]-LI[i])
+      s<-Sem.ruid(K=100000,mu=mu,n=n,l=k+1,alpha1=alpha,beta1=beta,start1=start,N=N,S=S)
       k<-s
-      as.vector(c(((sum((LI[i]<=mu & mu<= LS[i])*1))),(LS[i]-LI[i])))
     }
-    stopCluster(cl)
-    coverage <- cove[,1]
-    leng <- cove[,2]
-    return(data.frame(n=n, method=method, distribution=dist, R=R, coverage=mean(coverage), avg_width=mean(leng), sd_width=sd(leng)))
-  }
+    return(data.frame(n=n,method=method,distribution=dist,R=R,coverage=mean(coverage),avg_width=mean(leng),sd_width=sd(leng)))
+    }
     else if(dist=="exponential"){
       k<-Sem.ruidexp(K=10000,mu=mu,n=n,l=1,alpha1=alpha, beta1=beta,start1 = start,N=N,S=S)
       u<-1:n/n
@@ -149,7 +146,7 @@ Coverageshortmemory<-function(n,R,N,S,mu,dist,method,alpha,beta,start,Subdivisio
         s<-Sem.ruidunif(K=100000,mu=mu,n=n,l=k+1,alpha1=alpha, beta1=beta,start1 = start,N=N,S=S)
         k<-s
       }
-      return(data.frame(n = n,method = method,distribution=dist,R = R,coverage = mean(coverage),avg_width=mean(leng),sd_width=sd(leng)))
+      return(data.frame(n=n,method=method,distribution=dist,R=R,coverage=mean(coverage),avg_width=mean(leng),sd_width=sd(leng)))
     }
 }
   else if(method=="boot"){
@@ -159,37 +156,35 @@ Coverageshortmemory<-function(n,R,N,S,mu,dist,method,alpha,beta,start,Subdivisio
     LI<-rep(0, R)
     LS<-rep(0, R)
     leng<-rep(0, R)
-    for(i in 1:R)
-    {
-      param<-ruidof(s.seed=k,n=n,mu=mu,N=N,S=S,alpha1=alpha, beta1=beta,start1= start)
-      bootbeta<-Boot01(ruido=param$`ruido`,phi= param$phi,sigma=param$sigma,Trend=param$Trend,NN=NN,B=B,m=m,n=n,mu=mu)
+    for(i in 1:R){
+      param<-ruidof(s.seed=k,n=n,mu=mu,N=N,S=S,alpha1=alpha,beta1=beta,start1=start)
+      bootbeta<-Boot01(ruido=param$`ruido`,phi= param$phi,sigma=param$sigma,Trend=param$Trend,NN=NN,B=B,m=m,n=n)
       LI[i]<-quantile(bootbeta, probs=0.05)
       LS[i]<-quantile(bootbeta, probs=0.95)
       coverT[i]<-((sum((LI[i]<=mu & mu<= LS[i])*1)))
       leng[i]<-(LS[i]-LI[i])
-      s<-Sem.ruid(K=10000,mu=mu,n=n,l=k+1,alpha1=alpha, beta1=beta,start1 = start,N=N,S=S)
+      s<-Sem.ruid(K=10000,mu=mu,n=n,l=k+1,alpha1=alpha,beta1=beta,start1=start,N=N,S=S)
       k<-s
     }
-    return(data.frame(n = n,method = method,distribution=dist,R = R,B=B, coverage = mean(coverT),avg_width= mean(leng),sd_width=sd(leng)))
+    return(data.frame(n=n,method=method,distribution=dist,R=R,B=B,coverage=mean(coverT),avg_width=mean(leng),sd_width=sd(leng)))
     }
     else if(dist=="exponential"){
-      k<-Sem.ruidexp(K=10000,mu=mu,n=n,l=1,alpha1=alpha,beta1=beta,start1 = start,N=N,S=S)
+      k<-Sem.ruidexp(K=10000,mu=mu,n=n,l=1,alpha1=alpha,beta1=beta,start1=start,N=N,S=S)
       coverT<-rep(0, R)
       LI<-rep(0, R)
       LS<-rep(0, R)
       leng<-rep(0, R)
-      for(i in 1:R)
-      {
-        param<-ruidofexp(s.seed=k,n=n,mu=mu,N=N,S=S,alpha1=alpha, beta1=beta,start1= start)
-        bootbeta<-Boot01(ruido=param$`ruido`,phi= param$phi,sigma=param$sigma,Trend=param$Trend,NN=NN,B=B,m=m,n=n,mu=mu)
+      for(i in 1:R){
+        param<-ruidofexp(s.seed=k,n=n,mu=mu,N=N,S=S,alpha1=alpha,beta1=beta,start1= start)
+        bootbeta<-Boot01(ruido=param$`ruido`,phi= param$phi,sigma=param$sigma,Trend=param$Trend,NN=NN,B=B,m=m,n=n)
         LI[i]<-quantile(bootbeta, probs=0.05)
         LS[i]<-quantile(bootbeta, probs=0.95)
         coverT[i]<-((sum((LI[i]<=mu & mu<= LS[i])*1)))
         leng[i]<-(LS[i]-LI[i])
-        s<-Sem.ruidexp(K=10000,mu=mu,n=n,l=k+1,alpha1=alpha, beta1=beta,start1 = start,N=N,S=S)
+        s<-Sem.ruidexp(K=10000,mu=mu,n=n,l=k+1,alpha1=alpha,beta1=beta,start1=start,N=N,S=S)
         k<-s
       }
-      return(data.frame(n = n,method = method,distribution=dist,R=R,B=B,coverage = mean(coverT),avg_width=mean(leng),sd_width=sd(leng)))
+      return(data.frame(n = n,method = method,distribution=dist,R=R,B=B,coverage=mean(coverT),avg_width=mean(leng),sd_width=sd(leng)))
     }
     else if(dist=="uniform"){
       k<-Sem.ruidunif(K=10000,mu=mu,n=n,l=1,alpha1=alpha, beta1=beta,start1 = start,N=N,S=S)
@@ -197,10 +192,9 @@ Coverageshortmemory<-function(n,R,N,S,mu,dist,method,alpha,beta,start,Subdivisio
       LI<-rep(0, R)
       LS<-rep(0, R)
       leng<-rep(0, R)
-      for(i in 1:R)
-      {
+      for(i in 1:R){
         param<-ruidofunif(s.seed=k,n=n,mu=mu,N=N,S=S,alpha1=alpha, beta1=beta,start1= start)
-        bootbeta<-Boot01(ruido=param$`ruido`,phi= param$phi,sigma=param$sigma,Trend=param$Trend,NN=NN,B=B,m=m,n=n,mu=mu)
+        bootbeta<-Boot01(ruido=param$`ruido`,phi= param$phi,sigma=param$sigma,Trend=param$Trend,NN=NN,B=B,m=m,n=n)
         LI[i]<-quantile(bootbeta, probs=0.05)
         LS[i]<-quantile(bootbeta, probs=0.95)
         coverT[i]<-((sum((LI[i]<=mu & mu<= LS[i])*1)))
@@ -213,7 +207,7 @@ Coverageshortmemory<-function(n,R,N,S,mu,dist,method,alpha,beta,start,Subdivisio
   }
   else if(method=="boott"){
     if(dist=="normal"){
-    k<-Sem.ruid(K=10000,mu=mu,n=n,l=1,alpha1=alpha, beta1=beta,start1 = start,N=N,S=S)
+    k<-Sem.ruid(K=10000,mu=mu,n=n,l=1,alpha1=alpha,beta1=beta,start1=start,N=N,S=S)
     coverT<-rep(0, R)
     LI<-rep(0, R)
     LS<-rep(0, R)
@@ -420,7 +414,6 @@ else if(case=="linear")
     }
   }
   else if(method=="boot"){
-
     if(dist=="normal"){
       k<-Sem.ruidlnorm(K=10000,mu=mu,n=n,l=1,alpha1=alpha,beta1=beta,start1=start,N=N,S=S)
       coverT<-rep(0, R)
@@ -430,7 +423,7 @@ else if(case=="linear")
       for(i in 1:R)
       {
         param<-ruidoflnorm(s.seed=k,n=n,mu=mu,N=N,S=S,alpha1=alpha, beta1=beta,start1=start)
-        bootbeta<-Boot01(ruido=param$`ruido`,phi=param$phi,sigma=param$sigma,Trend=param$Trend,NN=NN,B=B,m=m,n=n,mu=mu)
+        bootbeta<-Boot01(ruido=param$`ruido`,phi=param$phi,sigma=param$sigma,Trend=param$Trend,NN=NN,B=B,m=m,n=n)
         LI[i]<-quantile(bootbeta, probs=0.05)
         LS[i]<-quantile(bootbeta, probs=0.95)
         coverT[i]<-((sum((LI[i]<=mu & mu<= LS[i])*1)))
@@ -440,7 +433,6 @@ else if(case=="linear")
       }
       return(data.frame(n = n,method=method,distribution=dist,R = R,B=B,coverage = mean(coverT),avg_width=mean(leng),sd_width=sd(leng)))
     }
-
     else if(dist=="exponential"){
       k<-Sem.ruidlexp(K=10000,mu=mu,n=n,l=1,alpha1=alpha, beta1=beta,start1 = start,N=N,S=S)
       coverT<-rep(0, R)
@@ -450,7 +442,7 @@ else if(case=="linear")
       for(i in 1:R)
       {
         param<-ruidoflexp(s.seed=k,n=n,mu=mu,N=N,S=S,alpha1=alpha, beta1=beta,start1= start)
-        bootbeta<-Boot01(ruido=param$`ruido`,phi= param$phi,sigma=param$sigma,Trend=param$Trend,NN=NN,B=B,m=m,n=n,mu=mu)
+        bootbeta<-Boot01(ruido=param$`ruido`,phi= param$phi,sigma=param$sigma,Trend=param$Trend,NN=NN,B=B,m=m,n=n)
         LI[i]<-quantile(bootbeta, probs=0.05)
         LS[i]<-quantile(bootbeta, probs=0.95)
         coverT[i]<-((sum((LI[i]<=mu & mu<= LS[i])*1)))
@@ -469,7 +461,7 @@ else if(case=="linear")
       for(i in 1:R)
       {
         param<-ruidoflunif(s.seed=k,n=n,mu=mu,N=N,S=S,alpha1=alpha, beta1=beta,start1= start)
-        bootbeta<-Boot01(ruido=param$`ruido`,phi= param$phi,sigma=param$sigma,Trend=param$Trend,NN=NN,B=B,m=m,n=n,mu=mu)
+        bootbeta<-Boot01(ruido=param$`ruido`,phi= param$phi,sigma=param$sigma,Trend=param$Trend,NN=NN,B=B,m=m,n=n)
         LI[i]<-quantile(bootbeta, probs=0.05)
         LS[i]<-quantile(bootbeta, probs=0.95)
         coverT[i]<-((sum((LI[i]<=mu & mu<= LS[i])*1)))
@@ -477,7 +469,7 @@ else if(case=="linear")
         s<-Sem.ruidunif(K=10000,mu=mu,n=n,l=k+1,alpha1=alpha, beta1=beta,start1 = start,N=N,S=S)
         k<-s
       }
-      return(data.frame(n = n,method = method,distribution=dist,R = R,B=B,coverage = mean(coverT),avg_width=mean(leng),sd_width=sd(leng)))
+      return(data.frame(n=n,method=method,distribution=dist,R=R,B=B,coverage=mean(coverT),avg_width=mean(leng),sd_width=sd(leng)))
     }
   }
 
@@ -563,7 +555,7 @@ else if(case=="linear")
         s<-Sem.ruid(K=10000,mu=mu,n=n,l=k+1,alpha1=alpha, beta1=beta,start1 = start,N=N,S=S)
         k<-s
       }
-      return(data.frame(n = n,method = method,distribution=dist,R = R,B=B,coverage = mean(coverT),avg_width=mean(leng),sd_width=sd(leng)))
+      return(data.frame(n=n,method=method,distribution=dist,R = R,B=B,coverage=mean(coverT),avg_width=mean(leng),sd_width=sd(leng)))
     }
     else if(dist=="exponential"){
       k<-Sem.ruidlexp(K=10000,mu=mu,n=n,l=1,alpha1=alpha, beta1=beta,start1 = start,N=N,S=S)
@@ -584,7 +576,7 @@ else if(case=="linear")
         s<-Sem.ruidexp(K=10000,mu=mu,n=n,l=k+1,alpha1=alpha,beta1=beta,start1 = start,N=N,S=S)
         k<-s
       }
-      return(data.frame(n = n,method = method,distribution=dist,R = R,B=B,coverage = mean(coverT),avg_width=mean(leng),sd_width=sd(leng)))
+      return(data.frame(n=n,method=method,distribution=dist,R=R,B=B,coverage=mean(coverT),avg_width=mean(leng),sd_width=sd(leng)))
     }
     else if(dist=="uniform"){
       k<-Sem.ruidlunif(K=10000,mu=mu,n=n,l=1,alpha1=alpha,beta1=beta,start1 = start,N=N,S=S)
@@ -605,7 +597,7 @@ else if(case=="linear")
         s<-Sem.ruidunif(K=10000,mu=mu,n=n,l=k+1,alpha1=alpha, beta1=beta,start1 = start,N=N,S=S)
         k<-s
       }
-      return(data.frame(n = n,method = method,distribution=dist,R = R,B=B,coverage = mean(coverT),avg_width=mean(leng),sd_width=sd(leng)))
+      return(data.frame(n=n,method=method,distribution=dist,R=R,B=B,coverage=mean(coverT),avg_width=mean(leng),sd_width=sd(leng)))
     }
   }
   else{return("Error")}

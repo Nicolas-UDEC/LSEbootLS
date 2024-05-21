@@ -2,7 +2,6 @@ kappa <- function(n, beta, alpha){
   u <- (1:n)/n
   d <- beta[1]+ u*exp(u*beta[2])
   sigma <- alpha[1] + alpha[2]*u + alpha[3]*u*u
-
   out <- matrix(0,ncol=n,nrow =n)
   for (i in 1:n){
     j <- 1:i
@@ -47,7 +46,6 @@ whittle.linear.long <- function(x,series,N,S){
   alpha.0 <- x[3]
   alpha.1 <- x[4]
   alpha.2 <- x[5]
-
   u1=(1:T1)/T1
   d <- vector("numeric")
   d <- beta.0 + u1*exp(u1*beta.1)
@@ -74,7 +72,6 @@ whittle.linear.long <- function(x,series,N,S){
 psi<-function(d, m){
   c(1, gamma(d + 1:m)/(gamma(d) * gamma(1:m + 1)))
 }
-
 
 lsfn.kalman.filter_reg<-function(param,series,h,m)
 {
@@ -117,7 +114,6 @@ lsfn.kalman.filter_reg<-function(param,series,h,m)
     loglik <- sum(log(delta)) + sum(na.exclude((series - hat.y)^2/delta))
     res <- (series - hat.y)
     res.stand <- res/sigma[1:n]
-
     OUT = NULL
     OUT$res = res
     OUT$res.stand = res.stand

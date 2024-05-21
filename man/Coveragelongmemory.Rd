@@ -32,7 +32,7 @@ Coveragelongmemory(
 
 \item{mu}{(type: numeric) trend coefficient of the regression model.}
 
-\item{dist}{(type: character) white noise distribution for calculating coverage, it includes the \code{"Gaussian"}, \code{"exponential"} and \code{"uniform"} univariate distributions.}
+\item{dist}{(type: character) white noise distribution for calculating coverage, it includes the \code{"normal"}, \code{"exponential"} and \code{"uniform"} univariate distributions.}
 
 \item{method}{(type: character) methods are asymptotic (\code{"asym"}), bootstrap percentile (\code{"boot"}) and bootstrap-t (\code{"boott"}).}
 
@@ -81,7 +81,7 @@ assumption of normality in large samples.
 \item boot: Standard bootstrap that generates replicas of the estimator \eqn{\hat{\beta}} by resampling
 the adjusted residuals \eqn{\hat{\epsilon}_t}. It approximates the distribution of the estimator by
 the variability observed in the bootstrap replicas of \eqn{\hat{\beta}}.
-\item boot-t: Adjusted bootstrap that scales the bootstrap replicas of the estimator
+\item boott: Adjusted bootstrap that scales the bootstrap replicas of the estimator
 \eqn{\hat{\beta}} by its standard error, aiming to refine the precision of the confidence interval
 and adjust for the variability in the parameter estimation.
 }

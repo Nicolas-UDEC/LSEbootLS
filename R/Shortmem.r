@@ -25,13 +25,11 @@ whittle.linear.loglik.short <- function(x, series, N, S){
   alpha.0 <- x[3]
   alpha.1 <- x[4]
   alpha.2 <- x[5]
-
   cond01<-is.infinite(beta.0)||is.nan(beta.0)
   cond02<-is.infinite(beta.1)||is.nan(beta.1)
   cond03<-is.infinite(alpha.0)||is.nan(alpha.0)
   cond04<-is.infinite(alpha.1)||is.nan(alpha.1)
   cond05<-is.infinite(alpha.2)||is.nan(alpha.2)
-
   if((cond01+cond02+cond03+cond04+cond05) ==0 )
   {
     u <- 1:T1/T1
@@ -53,12 +51,10 @@ whittle.linear.loglik.short <- function(x, series, N, S){
       }
       loglik <- mean(cc)/(4*pi)
     }
-
     else
     {
       loglik = 100000000000.
     }
-
   }
   else
   {
@@ -151,17 +147,15 @@ whittle.linear.loglik2 <- function(x, series, N, S){
     {
       loglik = 100000000000.
     }
-
   }
   else
   {
     loglik = 100000000000.
-
   }
   return(loglik)
 }
 
-Sem.ruidlexp<-function(K,l=1,mu=0.5,n=1000,N=60,S=40,alpha1=NULL, beta1=NULL,start1=NULL){
+Sem.ruidlexp<-function(K,l=1,mu,n,N,S,alpha1,beta1,start1){
   for(k in l:K){
     set.seed(k)
     zz<-rexp(n)
@@ -192,11 +186,11 @@ Sem.ruidlexp<-function(K,l=1,mu=0.5,n=1000,N=60,S=40,alpha1=NULL, beta1=NULL,sta
   }
 }
 
-ruidoflexp<-function(s.seed=4,n=500,mu=0.5,N=60,S=40,alpha1=NULL, beta1=NULL,start1=NULL){
+ruidoflexp<-function(s.seed,n,mu,N,S,alpha1,beta1,start1){
   set.seed(s.seed)
   u<-1:n/n
   zz<-rexp(n)
-  e<-sim.dat.lsar.2(n=n,alpha=alpha1, beta=beta1, z=(zz-mean(zz))/sd(zz)) ##z=zz)
+  e<-sim.dat.lsar.2(n=n,alpha=alpha1, beta=beta1, z=(zz-mean(zz))/sd(zz))
   Y<-mu*u+e
   model<-lm(Y~u-1)
   hat.beta<-model$coeff
@@ -218,7 +212,7 @@ ruidoflexp<-function(s.seed=4,n=500,mu=0.5,N=60,S=40,alpha1=NULL, beta1=NULL,sta
   return(list(ruido=ruido,phi=phi,sigma=sigma,Trend=Trend,hat.beta=hat.beta,fit=fit,hat.se=hat.se))
 }
 
-Sem.ruidlunif<-function(K,l=1,mu=0.5,n=1000,N=60,S=40,alpha1=NULL, beta1=NULL,start1=NULL){
+Sem.ruidlunif<-function(K,l=1,mu,n,N,S,alpha1,beta1,start1){
   for(k in l:K){
     set.seed(k)
     zz<-runif(n)
@@ -249,11 +243,11 @@ Sem.ruidlunif<-function(K,l=1,mu=0.5,n=1000,N=60,S=40,alpha1=NULL, beta1=NULL,st
   }
 }
 
-ruidoflunif<-function(s.seed=4,n=500,mu=0.5,N=60,S=40,alpha1=NULL, beta1=NULL,start1=NULL){
+ruidoflunif<-function(s.seed,n,mu,N,S,alpha1,beta1,start1){
   set.seed(s.seed)
   u<-1:n/n
   zz<-runif(n)
-  e<-sim.dat.lsar.2(n=n,alpha=alpha1, beta=beta1, z=(zz-mean(zz))/sd(zz)) ##z=zz)
+  e<-sim.dat.lsar.2(n=n,alpha=alpha1, beta=beta1, z=(zz-mean(zz))/sd(zz))
   Y<-mu*u+e
   model<-lm(Y~u-1)
   hat.beta<-model$coeff
@@ -275,7 +269,7 @@ ruidoflunif<-function(s.seed=4,n=500,mu=0.5,N=60,S=40,alpha1=NULL, beta1=NULL,st
   return(list(ruido=ruido,phi=phi,sigma=sigma,Trend=Trend,hat.beta=hat.beta,fit=fit,hat.se=hat.se))
 }
 
-Sem.ruidlnorm<-function(K,l=1,mu=0.5,n=1000,N=60,S=40,alpha1=NULL, beta1=NULL,start1=NULL){
+Sem.ruidlnorm<-function(K,l=1,mu,n,N,S,alpha1,beta1,start1){
   for(k in l:K){
     set.seed(k)
     zz<-rnorm(n)
@@ -299,7 +293,6 @@ Sem.ruidlnorm<-function(K,l=1,mu=0.5,n=1000,N=60,S=40,alpha1=NULL, beta1=NULL,st
     ruido<-ruido[-1]
     ruido<-ruido-mean(ruido)
     ACF<-acf(ruido,plot = F)
-
     if(all(ACF$acf[-1]< 2/sqrt(n)& ACF$acf[-1]> -2/sqrt(n)))
     {
       return(k)
@@ -307,7 +300,7 @@ Sem.ruidlnorm<-function(K,l=1,mu=0.5,n=1000,N=60,S=40,alpha1=NULL, beta1=NULL,st
   }
 }
 
-ruidoflnorm<-function(s.seed=4,n=500,mu=0.5,N=60,S=40,alpha1=NULL, beta1=NULL,start1=NULL){
+ruidoflnorm<-function(s.seed,n,mu,N,S,alpha1,beta1,start1){
   set.seed(s.seed)
   u<-1:n/n
   zz<-rnorm(n)
@@ -333,7 +326,7 @@ ruidoflnorm<-function(s.seed=4,n=500,mu=0.5,N=60,S=40,alpha1=NULL, beta1=NULL,st
   return(list(ruido=ruido,phi=phi,sigma=sigma,Trend=Trend,hat.beta=hat.beta,fit=fit,hat.se=hat.se))
 }
 
-Sem.ruid<-function(K,l=1,mu=0.5,n=1000,N=60,S=40,alpha1=NULL, beta1=NULL,start1=NULL){
+Sem.ruid<-function(K,l=1,mu,n,N,S,alpha1,beta1,start1){
   for(k in l:K){
     set.seed(k)
     zz<-rnorm(n)
@@ -364,7 +357,7 @@ Sem.ruid<-function(K,l=1,mu=0.5,n=1000,N=60,S=40,alpha1=NULL, beta1=NULL,start1=
   }
 }
 
-Sem.ruidexp<-function(K,l=1,mu=0.5,n=1000,N=60,S=40,alpha1=NULL, beta1=NULL,start1=NULL){
+Sem.ruidexp<-function(K,l=1,mu,n,N,S,alpha1,beta1,start1){
   for(k in l:K){
     set.seed(k)
     u<-1:n/n
@@ -387,7 +380,7 @@ Sem.ruidexp<-function(K,l=1,mu=0.5,n=1000,N=60,S=40,alpha1=NULL, beta1=NULL,star
     }
     ruido<-ruido[-1]
     ruido<-ruido-mean(ruido)
-    ACF<-acf(ruido,plot = T)
+    ACF<-acf(ruido,plot = F)
     ACF<-ACF$acf[-1]
     if(all(ACF< 2/sqrt(n)& ACF> -2/sqrt(n)))
     {
@@ -396,7 +389,7 @@ Sem.ruidexp<-function(K,l=1,mu=0.5,n=1000,N=60,S=40,alpha1=NULL, beta1=NULL,star
   }
 }
 
-Sem.ruidunif<-function(K,l=1,mu=0.5,n=1000,N=60,S=40,alpha1,beta1,start1){
+Sem.ruidunif<-function(K,l=1,mu,n,N,S,alpha1,beta1,start1){
   for(k in l:K){
     set.seed(k)
     u<-1:n/n
@@ -423,18 +416,16 @@ Sem.ruidunif<-function(K,l=1,mu=0.5,n=1000,N=60,S=40,alpha1,beta1,start1){
     ACF<-ACF$acf[-1]
     if(all(ACF< 2/sqrt(n)& ACF> -2/sqrt(n)))
     {
-      acf(ruido,plot = F)
       return(k)
     }
   }
 }
 
-ruidof<-function(s.seed=4,n=500,mu=0.5,N=60,S=40,alpha1=NULL, beta1=NULL,start1=NULL )
-{
+ruidof<-function(s.seed,n,mu,N,S,alpha1,beta1,start1){
   set.seed(s.seed)
   u<-1:n/n
   zz<-rnorm(n)
-  e<-sim.dat.lsar.short(n=n,alp=alpha1,bet=beta1, z=zz,w=2*pi)
+  e<-sim.dat.lsar.short(n=n,alp=alpha1,bet=beta1,z=zz,w=2*pi)
   Y<-mu*u+e
   model<-lm(Y~u-1)
   hat.beta<-model$coeff
@@ -456,8 +447,7 @@ ruidof<-function(s.seed=4,n=500,mu=0.5,N=60,S=40,alpha1=NULL, beta1=NULL,start1=
   return(list(ruido=ruido,phi=phi,sigma=sigma,Trend=Trend,hat.beta=hat.beta,fit=fit,hat.se=hat.se))
 }
 
-ruidofexp<-function(s.seed = 4,n=500,mu=0.5,N=60,S=40,alpha1=NULL, beta1=NULL,start1=NULL )
-{
+ruidofexp<-function(s.seed,n,mu,N,S,alpha1,beta1,start1){
   set.seed(s.seed)
   u<-1:n/n
   e<-sim.dat.lsar.short(n=n,alp=alpha1,bet=beta1,z=(rexp(n)-mean(rexp(n)))/sd(rexp(n)),w=2*pi)
@@ -482,8 +472,7 @@ ruidofexp<-function(s.seed = 4,n=500,mu=0.5,N=60,S=40,alpha1=NULL, beta1=NULL,st
 }
 
 
-ruidofunif<-function(s.seed = 4,n=500,mu=0.5,N=60,S=40,alpha1=NULL, beta1=NULL,start1=NULL )
-{
+ruidofunif<-function(s.seed,n=n,mu,N,S,alpha1,beta1,start1){
   set.seed(s.seed)
   u<-1:n/n
   e<-sim.dat.lsar.short(n=n,alp=alpha1,bet=beta1,z=(runif(n)-mean(runif(n)))/sd(runif(n)),w=2*pi)
@@ -507,16 +496,15 @@ ruidofunif<-function(s.seed = 4,n=500,mu=0.5,N=60,S=40,alpha1=NULL, beta1=NULL,s
   return(list(ruido=ruido,phi=phi,sigma=sigma,Trend=Trend,hat.beta=hat.beta,fit=fit,hat.se=hat.se))
 }
 
-Boot01<-function(ruido,phi,sigma,Trend,hat.beta,NN,B,m,n,mu)
-{
+Boot01<-function(ruido,phi,sigma,Trend,hat.beta,NN,B,m,n){
   u<-1:n/n
   beta_B<-matrix(NA, ncol = 1, nrow = B)
   for(k in 1:B){
     ruido_B<-c()
-    REsB   <- sample(ruido, size=m+NN, replace = TRUE, prob = NULL)
+    REsB   <- sample(ruido,size=m+NN,replace=TRUE,prob=NULL)
     ruido_B[1]<-sum((phi[1:NN]^(0:(NN-1)))*REsB[1:NN])
     for(i in 2:n){
-      ruido_B[i] <- phi[i] * ruido_B[i-1] + sigma[i]*REsB[i]
+      ruido_B[i] <- phi[i]*ruido_B[i-1]+sigma[i]*REsB[i]
     }
     YB<-Trend + ruido_B
     model<-lm(YB~u-1)
@@ -525,8 +513,7 @@ Boot01<-function(ruido,phi,sigma,Trend,hat.beta,NN,B,m,n,mu)
   return(beta_B)
 }
 
-Boot01t<-function(ruido,phi,sigma,Trend,hat.beta,NN,B,m,n,mu)
-{
+Boot01t<-function(ruido,phi,sigma,Trend,hat.beta,NN,B,m,n){
   u<-1:n/n
   beta_B<-matrix(NA, ncol = 1, nrow = B)
   sdbeta_B<-matrix(NA, ncol = 1, nrow = B)
@@ -535,7 +522,7 @@ Boot01t<-function(ruido,phi,sigma,Trend,hat.beta,NN,B,m,n,mu)
     REsB <- sample(ruido, size=m+NN, replace = TRUE, prob = NULL)
     ruido_B[1]<-sum((phi[1:NN]^(0:(NN-1)))*REsB[1:NN])
     for(i in 2:n){
-      ruido_B[i] <- phi[i] * ruido_B[i-1] + sigma[i]*REsB[i]
+      ruido_B[i] <- phi[i]*ruido_B[i-1]+sigma[i]*REsB[i]
     }
     YB<-Trend + ruido_B
     model<-lm(YB~u-1)

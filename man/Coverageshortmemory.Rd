@@ -15,9 +15,9 @@ Coverageshortmemory(
   alpha,
   beta,
   start,
-  Subdivisions,
+  Subdivisions = 100,
   m = 10,
-  NN,
+  NN = 10,
   B,
   case,
   sign = 1.64
@@ -91,7 +91,7 @@ the variability observed in the bootstrap replicas of \eqn{\hat{\beta}}.
 \item boot-t: Adjusted bootstrap that scales the bootstrap replicas of the estimator
 \eqn{\hat{\beta}} by its standard error, aiming to refine the precision of the confidence interval
 and adjust for the variability in the parameter estimation.
-\item boot-SP: Symmetrized Percentile-t method, a variation of the boot-t that symmetrizes the
+\item bootSP: Symmetrized Percentile-t method, a variation of the boot-t that symmetrizes the
 bootstrap distribution around zero to handle skewed distributions or outliers more effectively.
 This method enhances the accuracy of confidence intervals by adjusting for asymmetries in the
 bootstrap replicas.
@@ -101,7 +101,7 @@ For more details, see references.
 }
 \examples{
 Coverageshortmemory(n=100,R=100,N=60,S=40,mu=0.5,dist="normal",method="asym",alpha=c(0.25,0.2),
-beta=c(1,1,-0.5),start=c(0.15,0.15,1,1,-0.5),Subdivisions=100,case="no-linear")
+beta=c(1,1,-0.5),start=c(0.15,0.15,1,1,-0.5),case="no-linear")
 
 }
 \references{
