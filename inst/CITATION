@@ -1,11 +1,13 @@
+citHeader("To cite {LSEbootLS} in publications use:")
+
 bibentry(
-  bibtype  = "Article",
-  title    = ,
-  author   = ,
-  journal  = ,
-  year     = ,
-  volume   = ,
-  number   = ,
-  pages    = ,
-  doi      =
+  bibtype  = "Manual",
+  title    = "{LSEbootLS}: Bootstrap Methods for Regression Models with Locally Stationary Errors",
+  author   = c(
+    person("Nicolás", "Loyola"),
+    person("Guillermo", "Ferreira"),
+    person("Joel", "Muñoz")
+  ),
+  year     = 2024,
+  url      = "https://github.com/Nicolas-UDEC/LSEbootLS"
 )
