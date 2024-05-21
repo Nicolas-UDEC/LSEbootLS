@@ -15,7 +15,10 @@ Coveragelongmemory(
   B = NULL,
   nr.cores = 1,
   seed = 123,
-  sign = 1.64
+  sign = 1.64,
+  alpha,
+  beta,
+  start
 )
 }
 \arguments{
@@ -40,6 +43,12 @@ Coveragelongmemory(
 \item{seed}{(type: numeric) random number generator seed to generate the bootstrap samples.}
 
 \item{sign}{nominal significance level}
+
+\item{alpha}{(type: numeric) numeric vector with values to simulate the time varying autoregressive parameters of model LSAR(1), \eqn{\phi(u)}.}
+
+\item{beta}{(type: numeric) numeric vector with values to simulate the time varying scale factor parameters of model LSAR(1), \eqn{\sigma(u)}.}
+
+\item{start}{(type: numeric) numeric vector, initial values for parameters to run the model.}
 }
 \value{
 A data frame containing the following columns:
@@ -66,12 +75,12 @@ In this particular case, \eqn{d(u)} is modeled as a linear polynomial, and \eqn{
 
 Resampling methods evaluated:
 \itemize{
-\item boot: Standard bootstrap that generates replicas of the estimator \eqn{\hat{\beta}} by resampling
-the adjusted residuals \eqn{\hat{\epsilon}_t}. It approximates the distribution of the estimator by
-the variability observed in the bootstrap replicas of \eqn{\hat{\beta}}.
 \item asym: Asymptotic method that uses the asymptotic variance of the estimator, based
 on the Central Limit Theorem, to construct confidence intervals under the
 assumption of normality in large samples.
+\item boot: Standard bootstrap that generates replicas of the estimator \eqn{\hat{\beta}} by resampling
+the adjusted residuals \eqn{\hat{\epsilon}_t}. It approximates the distribution of the estimator by
+the variability observed in the bootstrap replicas of \eqn{\hat{\beta}}.
 \item boot-t: Adjusted bootstrap that scales the bootstrap replicas of the estimator
 \eqn{\hat{\beta}} by its standard error, aiming to refine the precision of the confidence interval
 and adjust for the variability in the parameter estimation.
@@ -80,9 +89,10 @@ and adjust for the variability in the parameter estimation.
 For more details, see references.
 }
 \examples{
-Coveragelongmemory(n=500,R=100,N=60,S=40,mu=0.5,dist="normal",method="asym")
+Coveragelongmemory(n=500,R=100,N=60,S=40,mu=0.5,dist="normal",method="asym",
+beta=c(0.1,-2),alpha=c(0.15,0.25, 0.1),start = c(0.1,-2,0.15,0.2, 0.1))
 
 }
 \references{
-Ferreira G., Mateu J., Vilar J.A., Muñoz J. (2020). Bootstrapping regression models with locally stationary disturbances. TEST, 30, 341-363. \doi{10.1007/s11749-020-00721-3}
+Ferreira G., Mateu J., Vilar J.A., Muñoz J. (2020). Bootstrapping regression models with locally stationary disturbances. TEST, 30, 341-363.
 }

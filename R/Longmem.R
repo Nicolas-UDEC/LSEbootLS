@@ -1,4 +1,4 @@
-kappa <- function(n, beta = numeric(), alpha = numeric() ){
+kappa <- function(n, beta, alpha){
   u <- (1:n)/n
   d <- beta[1]+ u*exp(u*beta[2])
   sigma <- alpha[1] + alpha[2]*u + alpha[3]*u*u
@@ -17,14 +17,14 @@ kappa <- function(n, beta = numeric(), alpha = numeric() ){
   return(out)
 }
 
-lsfn.innov.long <- function(n, beta, alpha,z){
+lsfn.innov.long <- function(n,beta,alpha,z){
   a <- kappa(n, beta = beta, alpha = alpha)
   b <- chol(a)
   y <- t(b)%*%z
   return(as.vector(y))
 }
 
-lsfn.long <- function(series1, N, S, start = NULL){
+lsfn.long <- function(series1,N,S,start){
   {
     T <- length(series1)
     u<-(1:T)/T
@@ -32,14 +32,14 @@ lsfn.long <- function(series1, N, S, start = NULL){
     fit <-lm(series1~x-1)
     LS<-coef(fit)
     series1<-fit$res
-    aux <- nlminb(start = start, whittle.linear.long,series = series1, N = N, S = S)
+    aux <- nlminb(start=start,whittle.linear.long,series=series1,N=N,S=S)
     par <- aux$par
     loglik <- -aux$objective
   }
   list(par,LS)
 }
 
-whittle.linear.long <- function(x, series, N, S){
+whittle.linear.long <- function(x,series,N,S){
   T1 <- length(series)
   M <- trunc((T1 - N + S)/S)
   beta.0 <- x[1]
@@ -76,16 +76,14 @@ psi<-function(d, m){
 }
 
 
-lsfn.kalman.filter_reg<-function(param, series, h, m )
+lsfn.kalman.filter_reg<-function(param,series,h,m)
 {
   n <- length(series)
   u.d <- (1:n)/n
   d.u <- param[1]  + u.d*exp(param[2]*u.d)
   sigma.u <- param[3] + param[4]*u.d+param[5]*u.d*u.d
-
   d <- d.u
   sigma <- sigma.u
-
   ind.d <- (d <= 0 | d >= 0.5)
   ind.s <- (sigma <= 0)
   if (sum(ind.d) + sum(ind.s) == 0) {

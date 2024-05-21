@@ -27,13 +27,13 @@
 #'
 #' Resampling methods evaluated:
 #'
-#' - boot: Standard bootstrap that generates replicas of the estimator \eqn{\hat{\beta}} by resampling
-#'   the adjusted residuals \eqn{\hat{\epsilon}_t}. It approximates the distribution of the estimator by
-#'   the variability observed in the bootstrap replicas of \eqn{\hat{\beta}}.
-#'
 #' - asym: Asymptotic method that uses the asymptotic variance of the estimator, based
 #'   on the Central Limit Theorem, to construct confidence intervals under the
 #'   assumption of normality in large samples.
+#'
+#' - boot: Standard bootstrap that generates replicas of the estimator \eqn{\hat{\beta}} by resampling
+#'   the adjusted residuals \eqn{\hat{\epsilon}_t}. It approximates the distribution of the estimator by
+#'   the variability observed in the bootstrap replicas of \eqn{\hat{\beta}}.
 #'
 #' - boot-t: Adjusted bootstrap that scales the bootstrap replicas of the estimator
 #'   \eqn{\hat{\beta}} by its standard error, aiming to refine the precision of the confidence interval
@@ -50,7 +50,7 @@
 #'   \item \code{sd_width}: Standard deviation of the interval widths.
 #' }
 #'
-#' @references Ferreira G., Mateu J., Vilar J.A., Muñoz J. (2020). Bootstrapping regression models with locally stationary disturbances. TEST, 30, 341-363. \doi{10.1007/s11749-020-00721-3}
+#' @references Ferreira G., Mateu J., Vilar J.A., Muñoz J. (2020). Bootstrapping regression models with locally stationary disturbances. TEST, 30, 341-363.
 #'
 #' @examples
 #' Coveragelongmemory(n=500,R=100,N=60,S=40,mu=0.5,dist="normal",method="asym")

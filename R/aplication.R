@@ -1,5 +1,5 @@
-lsfn.whittle <- function(series1, N, S, start ,d.order,s.order){
-    aux <- nlminb(start = start,objective = whittle.linear.loglik, series = series1, N = N, S = S, d.order = d.order, s.order = s.order)
+lsfn.whittle <- function(series1,N,S,start,d.order,s.order){
+    aux <- nlminb(start=start,objective=whittle.linear.loglik,series=series1,N=N,S=S,d.order=d.order,s.order=s.order)
     par <- aux$par
     loglik <- -aux$objective
   return(par)
@@ -58,7 +58,7 @@ whittle.taper.loglik <- function(d, series, sigma){
   return(loglik/n)
 }
 
-fn.density <- function(lambda, d){
+fn.density <- function(lambda,d){
   a <- (2 * sin(lambda/2))^(-2 * d)
   a <- a/(2 * pi)
   return(a)
@@ -70,7 +70,7 @@ taper <- function(x){
   return(x*a)
 }
 
-kapp <- function(n, beta, alpha){
+kapp <- function(n,beta,alpha){
   u1<- 1:n/n
   d <- dissss(beta,u1)
   sigma <- dissss(alpha,u1)
@@ -88,7 +88,7 @@ kapp <- function(n, beta, alpha){
   return(out)
 }
 
-lsfn.innov.sim <- function(n = n, alpha, beta,z = z){
+lsfn.innov.sim <- function(n=n,alpha,beta,z=z){
   a<-kapp(n, beta = beta, alpha = alpha)
   b<-chol(a,pivot=T)
   y<-t(b)%*%z
@@ -101,7 +101,7 @@ test_t<- function(value){
   return(round(as.vector(mean/sd),3))
 }
 
-bootstrap.summary <- function(b, t, p) {
+bootstrap.summary <- function(b,t,p) {
   tibble(
     `Name` = names(b),
     `Estimate` = b,
@@ -110,8 +110,7 @@ bootstrap.summary <- function(b, t, p) {
   )
 }
 
-
-checkInput <- function(formula, data, start, d.order, s.order, N, S, B, nr.cores, seed) {
+checkInput <- function(formula,data,start,d.order,s.order,N,S,B,nr.cores,seed) {
   if(N <= 0 || S <= 0 || B <= 0 || nr.cores <=0 || nr.cores > detectCores() ) stop("invalid parameters")
   if(s.order < 0 || is.null(s.order)) stop("invalid s.order")
   if(d.order < 0 || is.null(d.order)) stop("invalid d.order")

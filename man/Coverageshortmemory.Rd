@@ -16,7 +16,7 @@ Coverageshortmemory(
   beta,
   start,
   Subdivisions,
-  m,
+  m = 10,
   NN,
   B,
   case,
@@ -82,12 +82,12 @@ This setup is referred to as a locally stationary autoregressive model (LSAR(1))
 
 Resampling methods evaluated:
 \itemize{
-\item boot: Standard bootstrap that generates replicas of the estimator \eqn{\hat{\beta}} by resampling
-the adjusted residuals \eqn{\hat{\epsilon}_t}. It approximates the distribution of the estimator by
-the variability observed in the bootstrap replicas of \eqn{\hat{\beta}}.
 \item asym: Asymptotic method that uses the asymptotic variance of the estimator, based
 on the Central Limit Theorem, to construct confidence intervals under the
 assumption of normality in large samples.
+\item boot: Standard bootstrap that generates replicas of the estimator \eqn{\hat{\beta}} by resampling
+the adjusted residuals \eqn{\hat{\epsilon}_t}. It approximates the distribution of the estimator by
+the variability observed in the bootstrap replicas of \eqn{\hat{\beta}}.
 \item boot-t: Adjusted bootstrap that scales the bootstrap replicas of the estimator
 \eqn{\hat{\beta}} by its standard error, aiming to refine the precision of the confidence interval
 and adjust for the variability in the parameter estimation.
@@ -105,5 +105,5 @@ beta=c(1,1,-0.5),start=c(0.15,0.15,1,1,-0.5),Subdivisions=100,case="no-linear")
 
 }
 \references{
-Ferreira G., Mateu J., Vilar J.A., Muñoz J. (2020). Bootstrapping regression models with locally stationary disturbances. TEST, 30, 341-363. \doi{10.1007/s11749-020-00721-3}
+Ferreira G., Mateu J., Vilar J.A., Muñoz J. (2020). Bootstrapping regression models with locally stationary disturbances. TEST, 30, 341-363.
 }

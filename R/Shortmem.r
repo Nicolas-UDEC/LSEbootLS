@@ -507,7 +507,7 @@ ruidofunif<-function(s.seed = 4,n=500,mu=0.5,N=60,S=40,alpha1=NULL, beta1=NULL,s
   return(list(ruido=ruido,phi=phi,sigma=sigma,Trend=Trend,hat.beta=hat.beta,fit=fit,hat.se=hat.se))
 }
 
-Boot01<-function(ruido=numeric(),phi=numeric(),sigma=numeric(),Trend=numeric(),hat.beta=numeric(),NN=100,B=1000,m=500,n=500,mu=0.5)
+Boot01<-function(ruido,phi,sigma,Trend,hat.beta,NN,B,m,n,mu)
 {
   u<-1:n/n
   beta_B<-matrix(NA, ncol = 1, nrow = B)
@@ -525,7 +525,7 @@ Boot01<-function(ruido=numeric(),phi=numeric(),sigma=numeric(),Trend=numeric(),h
   return(beta_B)
 }
 
-Boot01t<-function(ruido=numeric(),phi=numeric(),sigma=numeric(),Trend=numeric(),hat.beta=numeric(),NN=100,B=1000,m=500,n=500,mu=0.5)
+Boot01t<-function(ruido,phi,sigma,Trend,hat.beta,NN,B,m,n,mu)
 {
   u<-1:n/n
   beta_B<-matrix(NA, ncol = 1, nrow = B)

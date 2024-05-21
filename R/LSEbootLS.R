@@ -27,7 +27,7 @@
 #'
 #' - \code{alpha}: A matrix of bootstrap replicates for the \eqn{\alpha} polynomial coefficients.
 #'
-#' @references Ferreira G., Mateu J., Vilar J.A., Muñoz J. (2020). Bootstrapping regression models with locally stationary disturbances. TEST, 30, 341-363. \doi{10.1007/s11749-020-00721-3}
+#' @references Ferreira G., Mateu J., Vilar J.A., Muñoz J. (2020). Bootstrapping regression models with locally stationary disturbances. TEST, 30, 341-363.
 #'
 #' @details
 #' This function estimates the parameters in the linear regression model for \eqn{t = 1, ..., T},
