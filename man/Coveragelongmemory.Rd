@@ -15,10 +15,10 @@ Coveragelongmemory(
   B = NULL,
   nr.cores = 1,
   seed = 123,
-  sign = 1.64,
   alpha,
   beta,
-  start
+  start,
+  sign = 0.05
 )
 }
 \arguments{
@@ -42,13 +42,13 @@ Coveragelongmemory(
 
 \item{seed}{(type: numeric) random number generator seed to generate the bootstrap samples.}
 
-\item{sign}{nominal significance level}
-
 \item{alpha}{(type: numeric) numeric vector with values to simulate the time varying autoregressive parameters of model LSAR(1), \eqn{\phi(u)}.}
 
 \item{beta}{(type: numeric) numeric vector with values to simulate the time varying scale factor parameters of model LSAR(1), \eqn{\sigma(u)}.}
 
 \item{start}{(type: numeric) numeric vector, initial values for parameters to run the model.}
+
+\item{sign}{nominal significance level}
 }
 \value{
 A data frame containing the following columns:

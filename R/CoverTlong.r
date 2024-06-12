@@ -61,7 +61,7 @@
 #'
 #' @export
 #'
-Coveragelongmemory<-function(n,R,N,S,mu=0,dist,method,B=NULL,nr.cores=1,seed=123,sign=0.05,alpha,beta,start){
+Coveragelongmemory<-function(n,R,N,S,mu=0,dist,method,B=NULL,nr.cores=1,seed=123,alpha,beta,start,sign=0.05){
   if(method=="asym"){
     sign <- qnorm(1-sign/2)
     u<-1:n/n

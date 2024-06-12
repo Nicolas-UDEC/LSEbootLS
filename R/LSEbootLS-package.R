@@ -8,7 +8,7 @@
 #' @importFrom doSNOW registerDoSNOW
 #' @importFrom doRNG %dorng% registerDoRNG
 #' @importFrom snow clusterExport
-#' @importFrom stats rnorm rexp runif quantile coef nlminb na.exclude lm fft sd acf integrate as.formula reformulate ecdf
+#' @importFrom stats rnorm rexp runif quantile coef nlminb na.exclude lm fft sd acf integrate as.formula reformulate ecdf qnorm
 #' @importFrom foreach foreach %dopar%
 #' @importFrom iterators icount
 #' @import rlecuyer
