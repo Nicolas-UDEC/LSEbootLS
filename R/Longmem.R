@@ -24,7 +24,7 @@ lsfn.innov.long <- function(n,beta,alpha,z){
 }
 
 lsfn.long <- function(series1,N,S,start){
-  {laskdjlk
+  {
     T <- length(series1)
     u<-(1:T)/T
     x<- u

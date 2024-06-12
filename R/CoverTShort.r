@@ -8,7 +8,7 @@
 #' @param S (type: numeric) shifting places from block to block. Observe that the number of blocks M is determined by the following formula \eqn{M = \left\lfloor \frac{T-N}{S} + 1 \right\rfloor}, where \eqn{\left\lfloor . \right\rfloor} takes a single numeric argument \code{x} and returns a numeric vector containing the integers formed by truncating the values in \code{x} toward \code{0}.
 #' @param mu (type: numeric) trend coefficient of the regression model.
 #' @param dist (type: character) white noise distribution for calculating coverage, it includes the \code{"Gaussian"}, \code{"exponential"} and \code{"uniform"} univariate distributions.
-#' @param method (type: character) methods are asymptotic (\code{"asym"}), bootstrap percentile (\code{"boot"}), bootstrap-t (\code{"boott"}) and bootstrap-SP (\code{"boot-SP"}).
+#' @param method (type: character) methods are asymptotic (\code{"asym"}), bootstrap percentile (\code{"boot"}), bootstrap-t (\code{"boott"}) and bootstrap-SP (\code{"bootSP"}).
 #' @param alpha (type: numeric) numeric vector with values to simulate the time varying autoregressive parameters of model LSAR(1), \eqn{\phi(u)}.
 #' @param beta (type: numeric) numeric vector with values to simulate the time varying scale factor parameters of model LSAR(1), \eqn{\sigma(u)}.
 #' @param start (type: numeric) numeric vector, initial values for parameters to run the model.
@@ -50,7 +50,7 @@
 #'   the adjusted residuals \eqn{\hat{\epsilon}_t}. It approximates the distribution of the estimator by
 #'   the variability observed in the bootstrap replicas of \eqn{\hat{\beta}}.
 #'
-#' - boot-t: Adjusted bootstrap that scales the bootstrap replicas of the estimator
+#' - boott: Adjusted bootstrap that scales the bootstrap replicas of the estimator
 #'   \eqn{\hat{\beta}} by its standard error, aiming to refine the precision of the confidence interval
 #'   and adjust for the variability in the parameter estimation.
 #'
