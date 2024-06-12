@@ -238,8 +238,8 @@ if(case=="no-linear"){
         param<-ruidofexp(s.seed=k,n=n,mu=mu,N=N,S=S,alpha1=alpha, beta1=beta,start1= start)
         bootbetat<-Boot01t(ruido=param$`ruido`,phi= param$phi,sigma=param$sigma,Trend=param$Trend,NN=NN,B=B,m=m,n=n)
         bootbetat2<-as.matrix(((as.matrix(bootbetat[[1]])-param$hat.beta))/as.matrix(bootbetat[[2]]))
-        LI[i]<-param$hat.beta+quantile(bootbetat2, probs=sign / 2)*param$hat.se
-        LS[i]<-param$hat.beta+quantile(bootbetat2, probs=probs = 1 - sign / 2)*param$hat.se
+        LI[i]<-param$hat.beta+quantile(bootbetat2,probs=sign/2)*param$hat.se
+        LS[i]<-param$hat.beta+quantile(bootbetat2, probs=1-sign/2)*param$hat.se
         coverT[i]<-((sum((LI[i]<=mu & mu<= LS[i])*1)))
         leng[i]<-(LS[i]-LI[i])
         s<-Sem.ruidexp(K=10000,mu=mu,n=n,l=k+1,alpha1=alpha, beta1=beta,start1 = start,N=N,S=S)
