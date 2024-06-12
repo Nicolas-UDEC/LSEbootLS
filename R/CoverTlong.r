@@ -61,8 +61,9 @@
 #'
 #' @export
 #'
-Coveragelongmemory<-function(n,R,N,S,mu=0,dist,method,B=NULL,nr.cores=1,seed=123,sign=1.64,alpha,beta,start){
+Coveragelongmemory<-function(n,R,N,S,mu=0,dist,method,B=NULL,nr.cores=1,seed=123,sign=0.05,alpha,beta,start){
   if(method=="asym"){
+    sign <- qnorm(1-sign/2)
     u<-1:n/n
     coverT<-rep(0,R)
     LI<-rep(0,R)
@@ -155,8 +156,8 @@ Coveragelongmemory<-function(n,R,N,S,mu=0,dist,method,B=NULL,nr.cores=1,seed=123
           model<-lm(YB~u-1)
           beta_B[k]<-model$coeff
         }
-        LI<-quantile(beta_B, probs=0.05)
-        LS<-quantile(beta_B, probs=0.95)
+        LI <- quantile(beta_B, probs = sign / 2)
+        LS <- quantile(beta_B, probs = 1 - sign / 2)
         list(((as.numeric((LI<=mu & mu<= LS)))),(LS-LI))
       }
       stopCluster(cl)
@@ -184,8 +185,8 @@ Coveragelongmemory<-function(n,R,N,S,mu=0,dist,method,B=NULL,nr.cores=1,seed=123
           model<-lm(YB~u-1)
           beta_B[k]<-model$coeff
         }
-        LI<-quantile(beta_B, probs=0.05)
-        LS<-quantile(beta_B, probs=0.95)
+        LI <- quantile(beta_B, probs = sign / 2)
+        LS <- quantile(beta_B, probs = 1 - sign / 2)
         list(((as.numeric((LI<=mu & mu<= LS)))),(LS-LI))
       }
       stopCluster(cl)
@@ -213,8 +214,8 @@ Coveragelongmemory<-function(n,R,N,S,mu=0,dist,method,B=NULL,nr.cores=1,seed=123
           model<-lm(YB~u-1)
           beta_B[k]<-model$coeff
         }
-        LI<-quantile(beta_B, probs=0.05)
-        LS<-quantile(beta_B, probs=0.95)
+        LI <- quantile(beta_B, probs = sign / 2)
+        LS <- quantile(beta_B, probs = 1 - sign / 2)
         list(((as.numeric((LI<=mu & mu<= LS)))),(LS-LI))
       }
       stopCluster(cl)
@@ -257,8 +258,8 @@ Coveragelongmemory<-function(n,R,N,S,mu=0,dist,method,B=NULL,nr.cores=1,seed=123
           sdbeta_B[k]<-reg$coefficients[2]
         }
         bootbetat2<-as.matrix(((as.matrix(beta_B)-hat.beta))/as.matrix(sdbeta_B))
-        LI<-hat.beta+quantile(bootbetat2, probs=0.05)*hat.se
-        LS<-hat.beta+quantile(bootbetat2, probs=0.95)*hat.se
+        LI <- hat.beta + quantile(bootbetat2, probs = alpha / 2) * hat.se
+        LS <- hat.beta + quantile(bootbetat2, probs = 1 - alpha / 2) * hat.se
         list(((as.numeric((LI<=mu & mu<= LS)))),(LS-LI))
       }
       stopCluster(cl)
@@ -293,8 +294,8 @@ Coveragelongmemory<-function(n,R,N,S,mu=0,dist,method,B=NULL,nr.cores=1,seed=123
           sdbeta_B[k]<-reg$coefficients[2]
         }
         bootbetat2<-as.matrix(((as.matrix(beta_B)-hat.beta))/as.matrix(sdbeta_B))
-        LI<-hat.beta+quantile(bootbetat2, probs=0.05)*hat.se
-        LS<-hat.beta+quantile(bootbetat2, probs=0.95)*hat.se
+        LI <- hat.beta + quantile(bootbetat2, probs = alpha / 2) * hat.se
+        LS <- hat.beta + quantile(bootbetat2, probs = 1 - alpha / 2) * hat.se
         list(((as.numeric((LI<=mu & mu<= LS)))),(LS-LI))
       }
       stopCluster(cl)
@@ -329,8 +330,8 @@ Coveragelongmemory<-function(n,R,N,S,mu=0,dist,method,B=NULL,nr.cores=1,seed=123
           sdbeta_B[k]<-reg$coefficients[2]
         }
         bootbetat2<-as.matrix(((as.matrix(beta_B)-hat.beta))/as.matrix(sdbeta_B))
-        LI<-hat.beta+quantile(bootbetat2, probs=0.05)*hat.se
-        LS<-hat.beta+quantile(bootbetat2, probs=0.95)*hat.se
+        LI <- hat.beta + quantile(bootbetat2, probs = alpha / 2) * hat.se
+        LS <- hat.beta + quantile(bootbetat2, probs = 1 - alpha / 2) * hat.se
         list(((as.numeric((LI<=mu & mu<= LS)))),(LS-LI))
       }
       stopCluster(cl)

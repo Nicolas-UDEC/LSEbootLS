@@ -1,11 +1,11 @@
-citHeader("To cite {LSEbootLS} in publications use:")
+citHeader("To cite {LSEbootLS} package in publications use:")
 
 bibentry(
   bibtype  = "Manual",
-  title    = "{LSEbootLS}: Bootstrap Methods for Regression Models with Locally Stationary Errors",
+  title    = "LSEbootLS: Bootstrap Methods for Regression Models with Locally Stationary Errors",
   author   = c(
-    person("Nicolás", "Loyola"),
     person("Guillermo", "Ferreira"),
+    person("Nicolás", "Loyola"),
     person("Joel", "Muñoz")
   ),
   year     = 2024,
