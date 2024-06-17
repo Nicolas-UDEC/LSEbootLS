@@ -34,7 +34,7 @@ Coverageshortmemory(
 
 \item{mu}{(type: numeric) trend coefficient of the regression model.}
 
-\item{dist}{(type: character) white noise distribution for calculating coverage, it includes the \code{"Gaussian"}, \code{"exponential"} and \code{"uniform"} univariate distributions.}
+\item{dist}{(type: character) white noise distribution for calculating coverage, it includes the \code{"normal"}, \code{"exponential"} and \code{"uniform"} univariate distributions.}
 
 \item{method}{(type: character) methods are asymptotic (\code{"asym"}), bootstrap percentile (\code{"boot"}), bootstrap-t (\code{"boott"}) and bootstrap-SP (\code{"bootSP"}).}
 
