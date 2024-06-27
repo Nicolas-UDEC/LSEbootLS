@@ -496,15 +496,17 @@ ruidofunif<-function(s.seed,n=n,mu,N,S,alpha1,beta1,start1){
   return(list(ruido=ruido,phi=phi,sigma=sigma,Trend=Trend,hat.beta=hat.beta,fit=fit,hat.se=hat.se))
 }
 
-Boot01<-function(ruido,phi,sigma,Trend,hat.beta,NN,B,m,n){
+Boot01<-function(ruido=numeric(),phi=numeric(),sigma=numeric(),Trend=numeric(),hat.beta=numeric(),NN=NN,B=B,m=m,n=n,mu=mu)
+{
   u<-1:n/n
   beta_B<-matrix(NA, ncol = 1, nrow = B)
+
   for(k in 1:B){
     ruido_B<-c()
-    REsB   <- sample(ruido,size=m+NN,replace=TRUE,prob=NULL)
+    REsB   <- sample(ruido, size=m+NN, replace = TRUE, prob = NULL)
     ruido_B[1]<-sum((phi[1:NN]^(0:(NN-1)))*REsB[1:NN])
     for(i in 2:n){
-      ruido_B[i] <- phi[i]*ruido_B[i-1]+sigma[i]*REsB[i]
+      ruido_B[i] <- phi[i] * ruido_B[i-1] + sigma[i]*REsB[i]
     }
     YB<-Trend + ruido_B
     model<-lm(YB~u-1)

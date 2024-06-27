@@ -161,7 +161,7 @@ if(case=="no-linear"){
       param<-ruidof(s.seed=k,n=n,mu=mu,N=N,S=S,alpha1=alpha,beta1=beta,start1=start)
       bootbeta<-Boot01(ruido=param$`ruido`,phi= param$phi,sigma=param$sigma,Trend=param$Trend,NN=NN,B=B,m=m,n=n)
       LI <- quantile(bootbeta, probs = sign / 2)
-      LS <- quantile(bootbeta, probs = 1 - sign / 2)
+      LS <- quantile(bootbeta, probs =1 - (sign/2))
       coverT[i]<-((sum((LI[i]<=mu & mu<= LS[i])*1)))
       leng[i]<-(LS[i]-LI[i])
       s<-Sem.ruid(K=10000,mu=mu,n=n,l=k+1,alpha1=alpha,beta1=beta,start1=start,N=N,S=S)

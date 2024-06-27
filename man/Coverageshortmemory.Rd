@@ -16,8 +16,8 @@ Coverageshortmemory(
   beta,
   start,
   Subdivisions = 100,
-  m = 10,
-  NN = 10,
+  m = 500,
+  NN = 100,
   B,
   case,
   sign = 0.05
