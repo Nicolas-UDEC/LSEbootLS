@@ -69,7 +69,7 @@
 #'
 #' @export
 
-Coverageshortmemory<-function(n,R,N,S,mu,dist,method,alpha,beta,start,Subdivisions=100,m=10,NN=10,B,case,sign=0.05)
+Coverageshortmemory<-function(n,R,N,S,mu,dist,method,alpha,beta,start,Subdivisions=100,m=500,NN=100,B,case,sign=0.05)
 {
 if(case=="no-linear"){
   if(method=="asym"){
@@ -160,8 +160,8 @@ if(case=="no-linear"){
     for(i in 1:R){
       param<-ruidof(s.seed=k,n=n,mu=mu,N=N,S=S,alpha1=alpha,beta1=beta,start1=start)
       bootbeta<-Boot01(ruido=param$`ruido`,phi= param$phi,sigma=param$sigma,Trend=param$Trend,NN=NN,B=B,m=m,n=n)
-      LI <- quantile(bootbeta, probs = sign / 2)
-      LS <- quantile(bootbeta, probs =1 - (sign/2))
+      LI[i] <- quantile(bootbeta, probs = sign / 2)
+      LS[i] <- quantile(bootbeta, probs =1 - (sign/2))
       coverT[i]<-((sum((LI[i]<=mu & mu<= LS[i])*1)))
       leng[i]<-(LS[i]-LI[i])
       s<-Sem.ruid(K=10000,mu=mu,n=n,l=k+1,alpha1=alpha,beta1=beta,start1=start,N=N,S=S)
@@ -178,8 +178,8 @@ if(case=="no-linear"){
       for(i in 1:R){
         param<-ruidofexp(s.seed=k,n=n,mu=mu,N=N,S=S,alpha1=alpha,beta1=beta,start1= start)
         bootbeta<-Boot01(ruido=param$`ruido`,phi= param$phi,sigma=param$sigma,Trend=param$Trend,NN=NN,B=B,m=m,n=n)
-        LI <- quantile(bootbeta, probs = sign / 2)
-        LS <- quantile(bootbeta, probs = 1 - sign / 2)
+        LI[i] <- quantile(bootbeta, probs = sign / 2)
+        LS[i] <- quantile(bootbeta, probs = 1 - sign / 2)
         coverT[i]<-((sum((LI[i]<=mu & mu<= LS[i])*1)))
         leng[i]<-(LS[i]-LI[i])
         s<-Sem.ruidexp(K=10000,mu=mu,n=n,l=k+1,alpha1=alpha,beta1=beta,start1=start,N=N,S=S)
@@ -196,8 +196,8 @@ if(case=="no-linear"){
       for(i in 1:R){
         param<-ruidofunif(s.seed=k,n=n,mu=mu,N=N,S=S,alpha1=alpha, beta1=beta,start1= start)
         bootbeta<-Boot01(ruido=param$`ruido`,phi= param$phi,sigma=param$sigma,Trend=param$Trend,NN=NN,B=B,m=m,n=n)
-        LI <- quantile(bootbeta, probs = sign/2)
-        LS <- quantile(bootbeta, probs = 1-sign/2)
+        LI[i] <- quantile(bootbeta, probs = sign/2)
+        LS[i] <- quantile(bootbeta, probs = 1-sign/2)
         coverT[i]<-((sum((LI[i]<=mu & mu<= LS[i])*1)))
         leng[i]<-(LS[i]-LI[i])
         s<-Sem.ruidunif(K=10000,mu=mu,n=n,l=k+1,alpha1=alpha, beta1=beta,start1 = start,N=N,S=S)
@@ -424,7 +424,7 @@ else if(case=="linear")
         bootbeta<-Boot01(ruido=param$`ruido`,phi=param$phi,sigma=param$sigma,Trend=param$Trend,NN=NN,B=B,m=m,n=n)
         LI[i]<-quantile(bootbeta, probs=sign/2)
         LS[i]<-quantile(bootbeta, probs=1-sign/2)
-        coverT[i]<-((sum((LI[i]<=mu & mu<= LS[i])*1)))
+        coverT[i]<-(sum((LI[i]<=mu & mu<= LS[i])*1))
         leng[i]<-(LS[i]-LI[i])
         s<-Sem.ruid(K=10000,mu=mu,n=n,l=k+1,alpha1=alpha, beta1=beta,start1=start,N=N,S=S)
         k<-s
