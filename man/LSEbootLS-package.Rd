@@ -9,7 +9,7 @@
 Implements bootstrap methods for linear regression models with errors following a time-varying process, focusing on approximating the distribution of the least-squares estimator for regression models with locally stationary errors. It enables the construction of bootstrap and classical confidence intervals for regression coefficients, leveraging intensive simulation studies and real data analysis. The methodology is based on the approach described in Ferreira et al. (2020), allowing errors to be locally approximated by stationary processes.
 }
 \author{
-\strong{Maintainer}: Nicolás Loyola \email{nloyola2016@udec.cl}
+\strong{Maintainer}: Nicolas Loyola \email{nloyola2016@udec.cl}
 
 Authors:
 \itemize{

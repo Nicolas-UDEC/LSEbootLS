@@ -34,7 +34,7 @@
 #' \deqn{Y_{t,T} = X_{t,T} \beta + \epsilon_{t,T},}
 #' where a locally stationary autoregressive process of order one (LSAR(1)) is described by the equation:
 #' \deqn{\epsilon_{t,T} = \phi(u) \epsilon_{t-1,T} + \sigma(u) \eta_t}
-#' where u=t/T ∈ \[0,1\], with
+#' where u=t/T in \[0,1\], with
 #' \eqn{\phi(u)} is the autoregressive coefficient which is modeled as a linear polynomial,
 #' \eqn{\sigma(u)} is modeled as a quadratic polynomial, and {\eqn{\eta_t}} is a white noise sequence
 #' with zero mean and unit variance.
@@ -76,10 +76,10 @@ if(case=="no-linear"){
     if(dist=="normal"){
     k<-Sem.ruid(K=10000,mu=mu,n=n,l=1,alpha1=alpha,beta1=beta,start1=start,N=N,S=S)
     u<-1:n/n
-    coverT<-rep(0, R)
+    coverT<-rep(0,R)
     LI<-rep(0, R)
     LS<-rep(0, R)
-    coverage<-rep(0, R)
+    coverage<-rep(0,R)
     leng<-rep(0,R)
     sign <- qnorm(1-sign/2)
     for(i in 1:R){
@@ -90,8 +90,8 @@ if(case=="no-linear"){
       fit<-lsfn.whittle.short(Y,N=N,S=S,start2=start)
       fit2<-as.vector(as.vector(c(fit[[1]],fit[[2]])))
       VarCov<-(9/n)*(var.ar.alpha_caso.short(alpha3=c(fit2[1],fit2[2]),Gamma=c(fit2[3],fit2[4],fit2[5]),Subdivisions1=Subdivisions))
-      LI[i]<-fit2[6] - sign*sqrt(VarCov)
-      LS[i]<-fit2[6] + sign*sqrt(VarCov)
+      LI[i]<-fit2[6]-sign*sqrt(VarCov)
+      LS[i]<-fit2[6]+sign*sqrt(VarCov)
       coverage[i]<-((sum((LI[i]<=mu & mu<= LS[i])*1)))
       leng[i]<-(LS[i]-LI[i])
       s<-Sem.ruid(K=100000,mu=mu,n=n,l=k+1,alpha1=alpha,beta1=beta,start1=start,N=N,S=S)

@@ -74,7 +74,7 @@ This function estimates the parameters in the linear regression model for \eqn{t
 \deqn{Y_{t,T} = X_{t,T} \beta + \epsilon_{t,T},}
 where a locally stationary autoregressive process of order one (LSAR(1)) is described by the equation:
 \deqn{\epsilon_{t,T} = \phi(u) \epsilon_{t-1,T} + \sigma(u) \eta_t}
-where u=t/T ∈ [0,1], with
+where u=t/T in [0,1], with
 \eqn{\phi(u)} is the autoregressive coefficient which is modeled as a linear polynomial,
 \eqn{\sigma(u)} is modeled as a quadratic polynomial, and {\eqn{\eta_t}} is a white noise sequence
 with zero mean and unit variance.

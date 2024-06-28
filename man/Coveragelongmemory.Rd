@@ -68,7 +68,7 @@ This function estimates the parameters in the linear regression model for \eqn{t
 \deqn{Y_{t,T} = X_{t,T} \beta + \epsilon_{t,T},}
 where a locally stationary fractional noise process (LSFN) is described by the equation:
 \deqn{\epsilon_{t,T} = \sum_{j=0}^\infty \psi_j(u) \eta_{t-j}}
-for u=t/T ∈ [0,1], where \eqn{\psi_j(u) = \frac{\Gamma[j + d(u)]}{\Gamma[j+1] \Gamma[d(u)]}} and \eqn{d(u)} is the
+for u=t/T in [0,1], where \eqn{\psi_j(u) = \frac{\Gamma[j + d(u)]}{\Gamma[j+1] \Gamma[d(u)]}} and \eqn{d(u)} is the
 smoothly varying long-memory coefficient. This model is referred to as locally stationary fractional noise (LSFN).
 
 In this particular case, \eqn{d(u)} is modeled as a linear polynomial, and \eqn{\sigma(u)} as a quadratic polynomial.
