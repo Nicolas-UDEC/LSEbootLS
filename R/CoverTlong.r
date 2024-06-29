@@ -73,7 +73,7 @@ Coveragelongmemory<-function(n,R,N,S,mu=0,dist,method,B=NULL,nr.cores=1,seed=123
     trials<-R
     if(dist=="normal"){
       cl = makeCluster(nr.cores)
-      registerDoSNOW(cl)
+      registerDoParallel(cl)
       set.seed(seed)
       covert0<-foreach(icount(trials) ,.combine=rbind,.inorder=T)%dorng%{
         z<-rnorm(n)
@@ -92,7 +92,7 @@ Coveragelongmemory<-function(n,R,N,S,mu=0,dist,method,B=NULL,nr.cores=1,seed=123
     }
     else if(dist=="exponential"){
       cl = makeCluster(nr.cores)
-      registerDoSNOW(cl)
+      registerDoParallel(cl)
       set.seed(seed)
       covert00<-foreach(icount(trials) ,.combine=rbind,.inorder=T)%dorng%{
         zz<-rexp(n)
@@ -138,7 +138,7 @@ Coveragelongmemory<-function(n,R,N,S,mu=0,dist,method,B=NULL,nr.cores=1,seed=123
     trials <- R
     if(dist == "normal"){
       cl = makeCluster(nr.cores)
-      registerDoSNOW(cl)
+      registerDoParallel(cl)
       registerDoRNG(seed)
       covert<-foreach(icount(trials),.combine=rbind) %dopar% {
         z<-rnorm(n)
@@ -167,7 +167,7 @@ Coveragelongmemory<-function(n,R,N,S,mu=0,dist,method,B=NULL,nr.cores=1,seed=123
     else if(dist == "exponential")
     {
       cl = makeCluster(nr.cores)
-      registerDoSNOW(cl)
+      registerDoParallel(cl)
       registerDoRNG(seed)
       covert11<-foreach(icount(trials),.combine=rbind) %dopar% {
         z<-rexp(n)
@@ -196,7 +196,7 @@ Coveragelongmemory<-function(n,R,N,S,mu=0,dist,method,B=NULL,nr.cores=1,seed=123
     else if(dist == "uniform")
     {
       cl = makeCluster(nr.cores)
-      registerDoSNOW(cl)
+      registerDoParallel(cl)
       registerDoRNG(seed)
       covert111<-foreach(icount(trials),.combine=rbind) %dopar% {
         z<-runif(n)
@@ -233,7 +233,7 @@ Coveragelongmemory<-function(n,R,N,S,mu=0,dist,method,B=NULL,nr.cores=1,seed=123
     trials<-R
     if(dist == "normal"){
       cl = makeCluster(nr.cores)
-      registerDoSNOW(cl)
+      registerDoParallel(cl)
       registerDoRNG(seed)
       covert2<-foreach(icount(trials),.combine=rbind) %dopar% {
         z<-rnorm(n)
@@ -269,7 +269,7 @@ Coveragelongmemory<-function(n,R,N,S,mu=0,dist,method,B=NULL,nr.cores=1,seed=123
     else if(dist == "exponential")
     {
       cl = makeCluster(nr.cores)
-      registerDoSNOW(cl)
+      registerDoParallel(cl)
       registerDoRNG(seed)
       covert22<-foreach(icount(trials),.combine=rbind) %dopar% {
         z<-rexp(n)
@@ -305,7 +305,7 @@ Coveragelongmemory<-function(n,R,N,S,mu=0,dist,method,B=NULL,nr.cores=1,seed=123
     else if(dist == "uniform")
     {
       cl = makeCluster(nr.cores)
-      registerDoSNOW(cl)
+      registerDoParallel(cl)
       registerDoRNG(seed)
       covert222<-foreach(icount(trials),.combine=rbind) %dopar% {
         z<-runif(n)

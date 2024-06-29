@@ -24,8 +24,6 @@ Imports:
     parallel,
     LSTS,
     tibble,
-    snow,
-    doSNOW,
     iterators,
     rlecuyer
 Roxygen: list(markdown = TRUE)
